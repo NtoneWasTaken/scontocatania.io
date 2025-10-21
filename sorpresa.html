@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>La Tua Sorpresa</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --pumpkin: #ff6b35;
+      --amber: #f7931e;
+      --cream: #fef5e7;
+      --charcoal: #2d2d2d;
+      --purple: #8b5cf6;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+      color: var(--cream);
+    }
+
+    .halloween-title {
+      font-family: 'Creepster', cursive;
+      text-shadow: 0 0 20px var(--pumpkin);
+    }
+
+    .card {
+      background: rgba(139, 92, 246, 0.1);
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(247, 147, 30, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      border-color: var(--amber);
+      box-shadow: 0 10px 30px rgba(247, 147, 30, 0.3);
+    }
+
+    .stagger-in {
+      animation: stagger-in 0.6s ease-out forwards;
+      opacity: 0;
+    }
+
+    .stagger-in:nth-child(1) { animation-delay: 0.1s; }
+    .stagger-in:nth-child(2) { animation-delay: 0.2s; }
+    .stagger-in:nth-child(3) { animation-delay: 0.3s; }
+    .stagger-in:nth-child(4) { animation-delay: 0.4s; }
+
+    @keyframes stagger-in {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .pulse-glow {
+      animation: pulse-glow 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% {
+        box-shadow: 0 0 20px var(--pumpkin);
+      }
+      50% {
+        box-shadow: 0 0 40px var(--amber);
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen p-8">
+  <main class="max-w-4xl mx-auto">
+    <div class="text-center mb-12">
+      <h1 class="halloween-title text-5xl md:text-7xl mb-4" style="color: var(--pumpkin);">
+        La Tua Sorpresa! 🎃
+      </h1>
+      <p class="text-xl" style="color: var(--amber);">
+        Ecco cosa volevo dirti...
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-6 mb-12">
+      <!-- Card 1 -->
+      <div class="card stagger-in p-6 rounded-2xl">
+        <div class="text-4xl mb-4">💕</div>
+        <h3 class="text-2xl font-bold mb-3" style="color: var(--amber);">
+          Il Primo Momento
+        </h3>
+        <p class="leading-relaxed" style="color: var(--cream);">
+          Una piccola cenetta all'Horologe, cenetta a lume di ccandela con cibo buono buono.
+        </p>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="card stagger-in p-6 rounded-2xl">
+        <div class="text-4xl mb-4">🌙</div>
+        <h3 class="text-2xl font-bold mb-3" style="color: var(--amber);">
+          Il Secondo Momento
+        </h3>
+        <p class="leading-relaxed" style="color: var(--cream);">
+          Un filmettino spaventoso insieme al cinema, spaventati ed abbracciatoi stretti stretti.
+        </p>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="card stagger-in p-6 rounded-2xl">
+        <div class="text-4xl mb-4">✨</div>
+        <h3 class="text-2xl font-bold mb-3" style="color: var(--amber);">
+          Il Terzo Momento
+        </h3>
+        <p class="leading-relaxed" style="color: var(--cream);">
+          Se abbaimo le forze, potremmo andare da Nuts a prendere un dolcino insieme.
+        </p>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="card stagger-in p-6 rounded-2xl">
+        <div class="text-4xl mb-4">🎃</div>
+        <h3 class="text-2xl font-bold mb-3" style="color: var(--amber);">
+          Quarto Ed Ultimo Momento
+        </h3>
+        <p class="leading-relaxed" style="color: var(--cream);">
+          Si torna a casa, si consuma il nostro amore (si ficca) e poi si dorme felici.
+        </p>
+      </div>
+    </div>
+
+    <!-- Final Message -->
+    <div class="text-center p-8 rounded-2xl pulse-glow" style="background: rgba(139, 92, 246, 0.2); backdrop-filter: blur(10px);">
+      <p class="text-2xl md:text-3xl font-bold mb-4" style="color: var(--amber);">
+        Con tutto il mio cuore 🩵
+      </p>
+      <p class="text-lg" style="color: var(--cream);">
+        Spero che questo piccolo programma ti possa piacere e ti possa far divertire. Ti amo🩵.
+      </p>
+      <div class="mt-8">
+        <a href="index.html" class="inline-block px-6 py-3 rounded-full font-semibold transition-all hover:scale-105" style="background: var(--pumpkin); color: white;">
+          Torna all'inizio 🏠
+        </a>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
