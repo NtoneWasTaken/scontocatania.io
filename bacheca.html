@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I Miei Siti - Dashboard Personale</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 50px;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .add-site-btn {
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            border: 2px solid white;
+            color: white;
+            padding: 15px 30px;
+            font-size: 1.1em;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .add-site-btn:hover {
+            background: white;
+            color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .sites-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .site-card {
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            animation: fadeInUp 0.6s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .site-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }
+
+        .site-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .site-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        .site-card h3 {
+            color: #333;
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        .site-card p {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .site-card .url {
+            color: #667eea;
+            font-size: 0.9em;
+            word-break: break-all;
+            margin-bottom: 15px;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+            flex: 1;
+        }
+
+        .btn-visit {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-visit:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-edit {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .btn-edit:hover {
+            background: #e0e0e0;
+        }
+
+        .btn-delete {
+            background: #ff4757;
+            color: white;
+            flex: 0.3;
+        }
+
+        .btn-delete:hover {
+            background: #ff3838;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 90%;
+            animation: slideUp 0.3s ease;
+        }
+
+        .modal-content h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: white;
+            padding: 60px 20px;
+            animation: fadeIn 1s ease;
+        }
+
+        .empty-state h2 {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        .empty-state p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2em;
+            }
+
+            .sites-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 I Miei Siti Web</h1>
+            <p>Dashboard personale per gestire tutti i tuoi progetti</p>
+            <button class="add-site-btn" onclick="openModal()">➕ Aggiungi Nuovo Sito</button>
+        </header>
+
+        <div class="sites-grid" id="sitesGrid"></div>
+
+        <div class="empty-state" id="emptyState" style="display: none;">
+            <h2>Nessun sito ancora!</h2>
+            <p>Clicca sul pulsante qui sopra per aggiungere il tuo primo sito web</p>
+        </div>
+    </div>
+
+    <div class="modal" id="siteModal">
+        <div class="modal-content">
+            <h2 id="modalTitle">Aggiungi Nuovo Sito</h2>
+            <form id="siteForm">
+                <div class="form-group">
+                    <label>Icona (emoji)</label>
+                    <input type="text" id="siteIcon" placeholder="🌐" maxlength="2" required>
+                </div>
+                <div class="form-group">
+                    <label>Nome del Sito</label>
+                    <input type="text" id="siteName" placeholder="Il mio Portfolio" required>
+                </div>
+                <div class="form-group">
+                    <label>Descrizione</label>
+                    <textarea id="siteDescription" placeholder="Una breve descrizione del tuo sito..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>URL</label>
+                    <input type="url" id="siteUrl" placeholder="https://miosito.com" required>
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="btn btn-visit">Salva</button>
+                    <button type="button" class="btn btn-edit" onclick="closeModal()">Annulla</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let sites = [];
+        let editingIndex = -1;
+
+        // Carica i siti salvati
+        function loadSites() {
+            const saved = localStorage.getItem('mySites');
+            if (saved) {
+                sites = JSON.parse(saved);
+            } else {
+                // Siti di esempio
+                sites = [
+                    {
+                        icon: '💼',
+                        name: 'Portfolio Personale',
+                        description: 'Il mio portfolio professionale con tutti i progetti',
+                        url: 'https://example.com/portfolio'
+                    },
+                    {
+                        icon: '📝',
+                        name: 'Blog Personale',
+                        description: 'Articoli e riflessioni su sviluppo web e tecnologia',
+                        url: 'https://example.com/blog'
+                    },
+                    {
+                        icon: '🛍️',
+                        name: 'E-commerce Demo',
+                        description: 'Progetto dimostrativo di un negozio online',
+                        url: 'https://example.com/shop'
+                    }
+                ];
+                saveSites();
+            }
+            renderSites();
+        }
+
+        function saveSites() {
+            localStorage.setItem('mySites', JSON.stringify(sites));
+        }
+
+        function renderSites() {
+            const grid = document.getElementById('sitesGrid');
+            const emptyState = document.getElementById('emptyState');
+
+            if (sites.length === 0) {
+                grid.style.display = 'none';
+                emptyState.style.display = 'block';
+                return;
+            }
+
+            grid.style.display = 'grid';
+            emptyState.style.display = 'none';
+
+            grid.innerHTML = sites.map((site, index) => `
+                <div class="site-card">
+                    <div class="site-icon">${site.icon}</div>
+                    <h3>${site.name}</h3>
+                    <p>${site.description}</p>
+                    <div class="url">${site.url}</div>
+                    <div class="card-actions">
+                        <button class="btn btn-visit" onclick="visitSite('${site.url}')">Visita</button>
+                        <button class="btn btn-edit" onclick="editSite(${index})">Modifica</button>
+                        <button class="btn btn-delete" onclick="deleteSite(${index})">🗑️</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function openModal() {
+            editingIndex = -1;
+            document.getElementById('modalTitle').textContent = 'Aggiungi Nuovo Sito';
+            document.getElementById('siteForm').reset();
+            document.getElementById('siteModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('siteModal').classList.remove('active');
+        }
+
+        function editSite(index) {
+            editingIndex = index;
+            const site = sites[index];
+            document.getElementById('modalTitle').textContent = 'Modifica Sito';
+            document.getElementById('siteIcon').value = site.icon;
+            document.getElementById('siteName').value = site.name;
+            document.getElementById('siteDescription').value = site.description;
+            document.getElementById('siteUrl').value = site.url;
+            document.getElementById('siteModal').classList.add('active');
+        }
+
+        function deleteSite(index) {
+            if (confirm('Sei sicuro di voler eliminare questo sito?')) {
+                sites.splice(index, 1);
+                saveSites();
+                renderSites();
+            }
+        }
+
+        function visitSite(url) {
+            window.open(url, '_blank');
+        }
+
+        document.getElementById('siteForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const newSite = {
+                icon: document.getElementById('siteIcon').value || '🌐',
+                name: document.getElementById('siteName').value,
+                description: document.getElementById('siteDescription').value,
+                url: document.getElementById('siteUrl').value
+            };
+
+            if (editingIndex >= 0) {
+                sites[editingIndex] = newSite;
+            } else {
+                sites.push(newSite);
+            }
+
+            saveSites();
+            renderSites();
+            closeModal();
+        });
+
+        // Chiudi modal cliccando fuori
+        document.getElementById('siteModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Carica i siti all'avvio
+        loadSites();
+    </script>
+</body>
+</html>
